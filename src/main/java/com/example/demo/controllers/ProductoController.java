@@ -1,8 +1,7 @@
 package com.example.demo.controllers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Producto;
-import com.example.demo.model.Usuario;
 import com.example.demo.repository.productoRepository;
-import com.example.demo.repository.usuarioRepository;
 
-import jakarta.servlet.http.Cookie;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.xml.bind.DatatypeConverter;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {
@@ -32,7 +29,7 @@ public class ProductoController {
 	productoRepository proRep;
 	@GetMapping("/obtener")
 	public List<DTO> getProductos() {
-		List<DTO> listaUsariosDTO = new ArrayList<DTO>();
+		List<DTO> listaUsariosDTO = new ArrayList<>();
 		List<Producto> productos = proRep.findAll();
 		for (Producto p : productos) {
 			DTO dtoProducto = new DTO();
@@ -49,7 +46,7 @@ public class ProductoController {
 		return listaUsariosDTO;
 	}
 
-	
+
 	@PostMapping(path = "/obtener1", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DTO getProducto(@RequestBody DTO soloid, HttpServletRequest request) {
 		DTO dtoProducto = new DTO();
@@ -68,6 +65,7 @@ public class ProductoController {
 		}
 		return dtoProducto;
 	}
+
 	
 	@PostMapping(path = "/borrar1", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DTO deleteUsuario(@RequestBody DTO soloid, HttpServletRequest request) {
@@ -81,13 +79,38 @@ public class ProductoController {
 		}
 		return dtoUsuaria;
 	}
-	/*
+	
 	@PostMapping(path = "/anadirnuevo")
-	public void anadirUsuario(@RequestBody DatosAltaUsuario u, HttpServletRequest request) {
-		usuRep.save(new Usuaria(u.id, null, u.fechaNac, DatatypeConverter.parseBase64Binary(u.img), u.nombre, u.pass,
-				u.username, usuTipo.findById(u.rol)));
+	public void anadirUsuario(@RequestBody DatosAltaProducto p, HttpServletRequest request) {
+		proRep.save(new Producto(p.id, p.descripcion ,p.estado, p.marca,p.nombre,p.precio,p.ruta));
 	}
 
+	
+
+	static class DatosAltaProducto {
+		 int id;
+		 String descripcion;
+		 byte estado;
+		 String marca;
+		 String nombre;
+		 BigDecimal precio;
+		 String ruta;
+		public DatosAltaProducto(int id, String descripcion, byte estado, String marca, String nombre,
+				BigDecimal precio, String ruta) {
+			super();
+			this.id = id;
+			this.descripcion = descripcion;
+			this.estado = estado;
+			this.marca = marca;
+			this.nombre = nombre;
+			this.precio = precio;
+			this.ruta = ruta;
+		}
+		 
+		
+
+	}
+	/*
 	@PostMapping(path = "/autentica", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DTO autenticaUsuario(@RequestBody DatosAutenticaUsuario datos, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -103,7 +126,7 @@ public class ProductoController {
 		}
 		return dto;
 	}
-
+/*
 	@GetMapping(path = "/quienes")
 	public DTO getAutenticado(HttpServletRequest request) {
 		DTO dtoUsuario = new DTO();
@@ -128,10 +151,11 @@ public class ProductoController {
 			}
 			dtoUsuario.put("idDeRol", u.getUsuarioTipo().getId());
 			dtoUsuario.put("Rol", u.getUsuarioTipo().getRol());
-		} 
+		}
 		return dtoUsuario;
 	}
 
+	
 	static class DatosAutenticaUsuario {
 		String username;
 		String pass;
@@ -140,32 +164,6 @@ public class ProductoController {
 			super();
 			this.username = username;
 			this.pass = pass;
-		}
-
-	}
-
-	static class DatosAltaUsuario {
-		int id;
-		Date fechaNac;
-		Date fechaElim;
-		String img;
-		// byte [] img;
-		String nombre;
-		String username;
-		String pass;
-		int rol;
-
-		public DatosAltaUsuario(int id, Date fechaNac, Date fechaElim, String img, String nombre, String username,
-				String pass, int rol) {
-			super();
-			this.id = id;
-			this.fechaNac = fechaNac;
-			this.fechaElim = fechaElim;
-			this.img = img;
-			this.nombre = nombre;
-			this.username = username;
-			this.pass = pass;
-			this.rol = rol;
 		}
 
 	}

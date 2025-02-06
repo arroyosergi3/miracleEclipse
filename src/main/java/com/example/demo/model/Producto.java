@@ -1,23 +1,28 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
 import java.math.BigDecimal;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 
 
 /**
  * The persistent class for the productos database table.
- *  
- */ 
+ *
+ */
 @Entity
-@Table(name="productos") 
+@Table(name="productos")
 @NamedQuery(name="Producto.findAll", query="SELECT p FROM Producto p")
 public class Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
- 
+
 	@Id
 	private int id;
- 
+
 	@Lob
 	private String descripcion;
 
@@ -30,6 +35,19 @@ public class Producto implements Serializable {
 	private BigDecimal precio;
 
 	private String ruta;
+
+	
+	public Producto(int id, String descripcion, byte estado, String marca, String nombre, BigDecimal precio,
+			String ruta) {
+		super();
+		this.id = id;
+		this.descripcion = descripcion;
+		this.estado = estado;
+		this.marca = marca;
+		this.nombre = nombre;
+		this.precio = precio;
+		this.ruta = ruta;
+	}
 
 	public Producto() {
 	}

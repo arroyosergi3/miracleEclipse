@@ -1,35 +1,20 @@
 package com.example.demo.controllers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.Usuario;
 import com.example.demo.repository.usuarioRepository;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.xml.bind.DatatypeConverter;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/usuaria")
 public class Usuariocontroller {
 
-	@Autowired
-	usuarioRepository usuRep;
-	
+	// @Autowired
+	// usuarioRepository usuRep;
+
 /*
 	@GetMapping("/obtener")
 	public List<DTO> getUsuarios() {
@@ -140,7 +125,7 @@ public class Usuariocontroller {
 			}
 			dtoUsuario.put("idDeRol", u.getUsuarioTipo().getId());
 			dtoUsuario.put("Rol", u.getUsuarioTipo().getRol());
-		} 
+		}
 		return dtoUsuario;
 	}
 

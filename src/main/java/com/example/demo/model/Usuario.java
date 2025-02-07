@@ -1,16 +1,12 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 
 /**
  * The persistent class for the usuarios database table.
- *
+ * 
  */
 @Entity
 @Table(name="usuarios")
@@ -20,7 +16,7 @@ public class Usuario implements Serializable {
 
 	private String apellido;
 
-	private String contraseña;
+	private String contrasena;
 
 	private String email;
 
@@ -29,10 +25,33 @@ public class Usuario implements Serializable {
 
 	private String nombre;
 
+	private String pais;
+
 	private String rol;
 
+	private String sexo;
+
+	
 	public Usuario() {
+		super();
 	}
+
+	
+
+	public Usuario(int id, String apellido, String contrasena, String email, String nombre, String pais, String rol,
+			String sexo) {
+		super();
+		this.apellido = apellido;
+		this.contrasena = contrasena;
+		this.email = email;
+		this.id = id;
+		this.nombre = nombre;
+		this.pais = pais;
+		this.rol = rol;
+		this.sexo = sexo;
+	}
+
+
 
 	public String getApellido() {
 		return this.apellido;
@@ -42,12 +61,12 @@ public class Usuario implements Serializable {
 		this.apellido = apellido;
 	}
 
-	public String getContraseña() {
-		return this.contraseña;
+	public String getContrasena() {
+		return this.contrasena;
 	}
 
 	public void setContraseña(String contraseña) {
-		this.contraseña = contraseña;
+		this.contrasena = contraseña;
 	}
 
 	public String getEmail() {
@@ -74,12 +93,28 @@ public class Usuario implements Serializable {
 		this.nombre = nombre;
 	}
 
+	public Object getPais() {
+		return this.pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
 	public String getRol() {
 		return this.rol;
 	}
 
 	public void setRol(String rol) {
 		this.rol = rol;
+	}
+
+	public String getSexo() {
+		return this.sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 
 }

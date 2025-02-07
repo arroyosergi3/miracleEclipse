@@ -1,21 +1,33 @@
 package com.example.demo.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.Cookie;
+import com.example.demo.jwtSecurity.AutenticadorJWT;
+import com.example.demo.model.Usuario;
 import com.example.demo.repository.usuarioRepository;
 
-@CrossOrigin
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/usuaria")
+@RequestMapping("/usuario")
 public class Usuariocontroller {
 
-	// @Autowired
-	// usuarioRepository usuRep;
+	@Autowired
+	usuarioRepository usuRep;
 
-/*
 	@GetMapping("/obtener")
 	public List<DTO> getUsuarios() {
 		List<DTO> listaUsariosDTO = new ArrayList<DTO>();
@@ -25,16 +37,6 @@ public class Usuariocontroller {
 			dtoUsuaria.put("id", u.getId());
 			dtoUsuaria.put("nombre", u.getNombre());
 
-			if (u.getFechaElim() != null) {
-
-				dtoUsuaria.put("fecha_elim", u.getFechaElim().toString());
-			} else {
-				dtoUsuaria.put("fecha_elim", new Date(0));
-			}
-
-			dtoUsuaria.put("idDeRol", u.getUsuarioTipo().getId());
-			dtoUsuaria.put("Rol", u.getUsuarioTipo().getRol());
-
 			listaUsariosDTO.add(dtoUsuaria);
 		}
 
@@ -43,33 +45,27 @@ public class Usuariocontroller {
 
 	@PostMapping(path = "/obtener1", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DTO getUsuario(@RequestBody DTO soloid, HttpServletRequest request) {
-		DTO dtoUsuaria = new DTO();
-		Usuaria u = usuRep.findById(Integer.parseInt(soloid.get("id").toString()));
+		DTO dtoUsuario = new DTO();
+		Usuario u = usuRep.findById(Integer.parseInt(soloid.get("id").toString()));
 		if (u != null) {
 
-			dtoUsuaria.put("id", u.getId());
-			dtoUsuaria.put("nombre", u.getNombre());
-			dtoUsuaria.put("fecha_nac", u.getFechaNac().toString());
+			dtoUsuario.put("id", u.getId());
+			dtoUsuario.put("nombre", u.getNombre());
+			dtoUsuario.put("apellido", u.getApellido());
+			dtoUsuario.put("email", u.getEmail());
+			dtoUsuario.put("sexo", u.getSexo());
+			dtoUsuario.put("pais", u.getPais());
+			dtoUsuario.put("contrasena", u.getContrasena());
+			dtoUsuario.put("rol", u.getRol());
 
-			if (u.getFechaElim() != null) {
-
-				dtoUsuaria.put("fecha_elim", u.getFechaElim().toString());
-			} else {
-				dtoUsuaria.put("fecha_elim", new Date(0));
-			}
-
-			dtoUsuaria.put("idDeRol", u.getUsuarioTipo().getId());
-			dtoUsuaria.put("Rol", u.getUsuarioTipo().getRol());
-		} else {
-			dtoUsuaria.put("Result", "fail");
 		}
-		return dtoUsuaria;
+		return dtoUsuario;
 	}
 
 	@PostMapping(path = "/borrar1", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DTO deleteUsuario(@RequestBody DTO soloid, HttpServletRequest request) {
 		DTO dtoUsuaria = new DTO();
-		Usuaria u = usuRep.findById(Integer.parseInt(soloid.get("id").toString()));
+		Usuario u = usuRep.findById(Integer.parseInt(soloid.get("id").toString()));
 		if (u != null) {
 			usuRep.delete(u);
 			dtoUsuaria.put("borrado", "success");
@@ -81,8 +77,7 @@ public class Usuariocontroller {
 
 	@PostMapping(path = "/anadirnuevo")
 	public void anadirUsuario(@RequestBody DatosAltaUsuario u, HttpServletRequest request) {
-		usuRep.save(new Usuaria(u.id, null, u.fechaNac, DatatypeConverter.parseBase64Binary(u.img), u.nombre, u.pass,
-				u.username, usuTipo.findById(u.rol)));
+		usuRep.save(new Usuario(u.id, u.nombre, u.apellido, u.email, u.sexo, u.pais, u.contrasena, u.rol));
 	}
 
 	@PostMapping(path = "/autentica", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -90,8 +85,8 @@ public class Usuariocontroller {
 			HttpServletResponse response) {
 		DTO dto = new DTO();
 		dto.put("result", "fail");
-		Usuaria usuarioAutenticado = usuRep.findByUsernameAndPass(datos.username, datos.pass);
-		if (usuarioAutenticado != null) {
+		Usuario usuarioAutenticado = usuRep.findByEmailAndContrasena(datos.email, datos.contrasena);
+		if (usuarioAutenticado != null) { 
 			dto.put("result", "ok");
 			dto.put("jwt", AutenticadorJWT.codificaJWT(usuarioAutenticado));
 			Cookie cook = new Cookie("jwt", AutenticadorJWT.codificaJWT(usuarioAutenticado));
@@ -113,59 +108,56 @@ public class Usuariocontroller {
 
 			}
 		}
-		Usuaria u = usuRep.findById(idUsuarioAutenticado);
+		Usuario u = usuRep.findById(idUsuarioAutenticado);
 		if (u != null) {
 			dtoUsuario.put("id", u.getId());
 			dtoUsuario.put("nombre", u.getNombre());
-			dtoUsuario.put("fecha_nac", u.getFechaNac().toString());
-			if (u.getFechaElim() != null) {
-				dtoUsuario.put("fecha_elim", u.getFechaElim().toString());
-			} else {
-				dtoUsuario.put("fecha_elim", new Date(0));
-			}
-			dtoUsuario.put("idDeRol", u.getUsuarioTipo().getId());
-			dtoUsuario.put("Rol", u.getUsuarioTipo().getRol());
-		}
+			dtoUsuario.put("apellido", u.getApellido());
+			dtoUsuario.put("email", u.getEmail());
+			dtoUsuario.put("sexo", u.getSexo());
+			dtoUsuario.put("pais", u.getPais());
+			dtoUsuario.put("contrasena", u.getContrasena());
+			dtoUsuario.put("rol", u.getRol());
+		
+	}
 		return dtoUsuario;
 	}
 
 	static class DatosAutenticaUsuario {
-		String username;
-		String pass;
+		String email;
+		String contrasena;
 
-		public DatosAutenticaUsuario(String username, String pass) {
+		public DatosAutenticaUsuario(String email, String contrasena) {
 			super();
-			this.username = username;
-			this.pass = pass;
+			this.email = email;
+			this.contrasena = contrasena;
 		}
 
 	}
 
 	static class DatosAltaUsuario {
 		int id;
-		Date fechaNac;
-		Date fechaElim;
-		String img;
-		// byte [] img;
 		String nombre;
-		String username;
-		String pass;
-		int rol;
+		String apellido;
+		String email;
+		String sexo;
+		String pais;
+		String contrasena;
+		String rol;
 
-		public DatosAltaUsuario(int id, Date fechaNac, Date fechaElim, String img, String nombre, String username,
-				String pass, int rol) {
+		public DatosAltaUsuario(int id, String nombre, String apellido, String email, String sexo, String pais,
+				String contrasena, String rol) {
 			super();
 			this.id = id;
-			this.fechaNac = fechaNac;
-			this.fechaElim = fechaElim;
-			this.img = img;
 			this.nombre = nombre;
-			this.username = username;
-			this.pass = pass;
+			this.apellido = apellido;
+			this.email = email;
+			this.sexo = sexo;
+			this.pais = pais;
+			this.contrasena = contrasena;
 			this.rol = rol;
 		}
 
 	}
-	*/
 
 }

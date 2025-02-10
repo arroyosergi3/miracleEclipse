@@ -48,7 +48,7 @@ public class ProductoController {
 	}
 
 	// CAMBIAR POR ID's		
-	@GetMapping("/obtenerPorId")
+	@PostMapping("/obtenerPorId")
 	public List<DTO> getProductosFiltrado(int id) { 
 		List<DTO> listaUsariosDTO = new ArrayList<>();
 		List<Producto> productos = proRep.findAll();

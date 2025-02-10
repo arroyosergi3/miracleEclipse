@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 
@@ -13,23 +15,19 @@ import jakarta.persistence.*;
 @NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	private String apellido;
-
-	private String contrasena;
-
-	private String email;
-
 	@Id
 	private int id;
 
 	private String nombre;
-
-	private String pais;
-
+	private String apellido;
+	private String email;
 	private String rol;
-
+	private String contrasena;
+	private String pais;
 	private String sexo;
+	
+	 @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<Alquilere> alquileres;
 
 	
 	public Usuario() {
@@ -116,5 +114,14 @@ public class Usuario implements Serializable {
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
+	
+	public List<Alquilere> getAlquileres() {
+        return alquileres;
+    }
+
+    public void setAlquileres(List<Alquilere> alquileres) {
+        this.alquileres = alquileres;
+    }
+    
 
 }

@@ -1,18 +1,14 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import java.util.List;
 
 
 /**
  * The persistent class for the productos database table.
- *
+ * 
  */
 @Entity
 @Table(name="productos")
@@ -22,23 +18,27 @@ public class Producto implements Serializable {
 
 	@Id
 	private int id;
-
 	@Lob
 	private String descripcion;
-
 	private byte estado;
-
-	private String marca;
-
+	@ManyToOne
+	@JoinColumn(name="id_marca")
+	private Marca marca;
 	private String nombre;
-
 	private BigDecimal precio;
-
 	private String ruta;
-
 	
-	public Producto(int id, String descripcion, byte estado, String marca, String nombre, BigDecimal precio,
-			String ruta) {
+	 @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<Alquilere> alquileres;
+
+	public Producto() {
+	}
+	
+	
+	
+	
+
+	public Producto(int id, String nombre,BigDecimal precio, byte estado, String descripcion, Marca marca,  String ruta) {
 		super();
 		this.id = id;
 		this.descripcion = descripcion;
@@ -49,8 +49,9 @@ public class Producto implements Serializable {
 		this.ruta = ruta;
 	}
 
-	public Producto() {
-	}
+
+
+
 
 	public int getId() {
 		return this.id;
@@ -76,11 +77,12 @@ public class Producto implements Serializable {
 		this.estado = estado;
 	}
 
-	public Object getMarca() {
+
+	public Marca getMarca() {
 		return this.marca;
 	}
 
-	public void setMarca(String marca) {
+	public void setMarca(Marca marca) {
 		this.marca = marca;
 	}
 
@@ -107,5 +109,15 @@ public class Producto implements Serializable {
 	public void setRuta(String ruta) {
 		this.ruta = ruta;
 	}
+	
+	public List<Alquilere> getAlquileres() {
+        return alquileres;
+    }
+
+    public void setAlquileres(List<Alquilere> alquileres) {
+        this.alquileres = alquileres;
+    }
+    
+	
 
 }

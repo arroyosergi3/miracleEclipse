@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.Cookie;
 import com.example.demo.jwtSecurity.AutenticadorJWT;
 import com.example.demo.model.Usuario;
+import com.example.demo.repository.marcaRepository;
 import com.example.demo.repository.usuarioRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -43,6 +45,8 @@ public class Usuariocontroller {
 		return listaUsariosDTO;
 	}
 
+	
+	
 	@PostMapping(path = "/obtener1", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DTO getUsuario(@RequestBody DTO soloid, HttpServletRequest request) {
 		DTO dtoUsuario = new DTO();
@@ -89,6 +93,11 @@ public class Usuariocontroller {
 		if (usuarioAutenticado != null) { 
 			dto.put("result", "ok");
 			dto.put("jwt", AutenticadorJWT.codificaJWT(usuarioAutenticado));
+			
+			Cookie cok = new Cookie("id_usuario", String.valueOf(usuarioAutenticado.getId()));
+			cok.setMaxAge(-1);
+			response.addCookie(cok);
+			
 			Cookie cook = new Cookie("jwt", AutenticadorJWT.codificaJWT(usuarioAutenticado));
 			cook.setMaxAge(-1);
 			response.addCookie(cook);

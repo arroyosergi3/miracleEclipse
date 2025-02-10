@@ -19,7 +19,7 @@ import com.example.demo.model.Usuario;
 import com.example.demo.repository.alquilereRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin()
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/alquileres")
 public class AlquileresController {
@@ -32,8 +32,8 @@ public class AlquileresController {
 		for (Alquilere p : alquileres) {
 			DTO dtoProducto = new DTO();
 			dtoProducto.put("id", p.getId());
-			dtoProducto.put("id_usuario", p.getIdUsuario().getId());
-			dtoProducto.put("id_producto", p.getIdProducto().getId());
+			dtoProducto.put("id_usuario", p.getUsuario());
+			dtoProducto.put("id_producto", p.getProducto());
 			dtoProducto.put("fecha_inicio", p.getFechaInicio());
 			dtoProducto.put("fecha_fin", p.getFechaFin());
 			
@@ -43,7 +43,7 @@ public class AlquileresController {
 		return listaUsariosDTO;
 	}
 	
-	@GetMapping(path = "/misProductos", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/misProductos", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public List<DTO> getMisProductos(@RequestBody DTO soloid, HttpServletRequest request) {
 		List<DTO> listaUsariosDTO = new ArrayList<>();
 		List<Alquilere> alquileres = alRep.findByUsuario_Id(Integer.parseInt(soloid.get("id_usuario").toString()));
@@ -51,8 +51,8 @@ public class AlquileresController {
 				
 				DTO dtoProducto = new DTO();
 				dtoProducto.put("id", p.getId());
-				dtoProducto.put("id_usuario", p.getIdUsuario().getId());
-				dtoProducto.put("id_producto", p.getIdProducto().getId());
+				dtoProducto.put("id_usuario", p.getUsuario().getId());
+				dtoProducto.put("id_producto", p.getProducto().getId());
 				dtoProducto.put("fecha_inicio", p.getFechaInicio());
 				dtoProducto.put("fecha_fin", p.getFechaFin());
 				
@@ -71,8 +71,8 @@ public class AlquileresController {
 		Alquilere p = alRep.findById(Integer.parseInt(soloid.get("id").toString()));
 		if (p != null) {
 			dtoProducto.put("id", p.getId());
-			dtoProducto.put("id_usuario", p.getIdUsuario());
-			dtoProducto.put("id_producto", p.getIdProducto());
+			dtoProducto.put("id_usuario", p.getUsuario());
+			dtoProducto.put("id_producto", p.getProducto());
 			dtoProducto.put("fecha_inicio", p.getFechaInicio());
 			dtoProducto.put("fecha_fin", p.getFechaFin());
 

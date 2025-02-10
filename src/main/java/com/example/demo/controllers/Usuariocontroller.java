@@ -89,18 +89,22 @@ public class Usuariocontroller {
 			HttpServletResponse response) {
 		DTO dto = new DTO();
 		dto.put("result", "fail");
-		Usuario usuarioAutenticado = usuRep.findByEmailAndContrasena(datos.email, datos.contrasena);
+		// usuarioAutenticado = usuRep.findByEmailAndContrasena(datos.email, datos.contrasena);
+		Usuario usuarioAutenticado = usuRep.autenticar(datos.email, datos.contrasena);
+
 		if (usuarioAutenticado != null) { 
 			dto.put("result", "ok");
+			dto.put("id_usuario", usuarioAutenticado.getId());
+			dto.put("rol", usuarioAutenticado.getRol());
 			dto.put("jwt", AutenticadorJWT.codificaJWT(usuarioAutenticado));
 			
-			Cookie cok = new Cookie("id_usuario", String.valueOf(usuarioAutenticado.getId()));
-			cok.setMaxAge(-1);
-			response.addCookie(cok);
+			
 			
 			Cookie cook = new Cookie("jwt", AutenticadorJWT.codificaJWT(usuarioAutenticado));
 			cook.setMaxAge(-1);
 			response.addCookie(cook);
+		}else {
+			dto.put("result", "fail fail que es null vaya");
 		}
 		return dto;
 	}

@@ -73,19 +73,19 @@ public class Alquilere implements Serializable {
 		this.fechaInicio = fechaInicio;
 	}
 
-	public Producto getIdProducto() {
+	public Producto getProducto() {
 		return this.producto;
 	}
 
-	public void setIdProducto(Producto idProducto) {
+	public void setProducto(Producto idProducto) {
 		this.producto = idProducto;
 	}
 
-	public Usuario getIdUsuario() {
+	public Usuario getUsuario() {
 		return this.usuario;
 	}
 
-	public void setIdUsuario(Usuario idUsuario) {
+	public void setUsuario(Usuario idUsuario) {
 		this.usuario = idUsuario;
 	}
 

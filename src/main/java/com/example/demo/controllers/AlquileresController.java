@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/alquileres")
+@RequestMapping("/alquiler")
 public class AlquileresController {
 	@Autowired
 	alquilereRepository alRep;

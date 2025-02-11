@@ -38,7 +38,12 @@ public class Usuariocontroller {
 			DTO dtoUsuaria = new DTO();
 			dtoUsuaria.put("id", u.getId());
 			dtoUsuaria.put("nombre", u.getNombre());
-
+			dtoUsuaria.put("apellido", u.getApellido());
+			dtoUsuaria.put("email", u.getEmail());
+			dtoUsuaria.put("sexo", u.getSexo());
+			dtoUsuaria.put("pais", u.getPais());
+			dtoUsuaria.put("contrasena", u.getContrasena());
+			dtoUsuaria.put("rol", u.getRol());
 			listaUsariosDTO.add(dtoUsuaria);
 		}
 

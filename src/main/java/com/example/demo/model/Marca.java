@@ -28,6 +28,16 @@ public class Marca implements Serializable {
 		
 	public Marca() {
 	}
+	
+	
+
+	public Marca(int id, String nombre) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+	}
+
+
 
 	public int getId() {
 		return this.id;

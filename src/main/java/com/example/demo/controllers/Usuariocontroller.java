@@ -81,7 +81,7 @@ public class Usuariocontroller {
 
 	@PostMapping(path = "/anadirnuevo")
 	public void anadirUsuario(@RequestBody DatosAltaUsuario u, HttpServletRequest request) {
-		usuRep.save(new Usuario(u.id, u.nombre, u.apellido, u.email, u.sexo, u.pais, u.contrasena, u.rol));
+		usuRep.save(new Usuario( u.nombre, u.apellido, u.email, u.sexo, u.pais, u.contrasena, u.rol));
 	}
 
 	@PostMapping(path = "/autentica", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -104,7 +104,13 @@ public class Usuariocontroller {
 			cook.setMaxAge(-1);
 			response.addCookie(cook);
 		}else {
-			dto.put("result", "fail fail que es null vaya");
+			Usuario usuarioEncontrado = usuRep.buscarUsuarioPorMail(datos.email);
+			if (usuarioEncontrado != null) {
+				dto.put("email", usuarioEncontrado.getEmail());
+			}else {
+				dto.put("result", "nullUser");
+			}
+			
 		}
 		return dto;
 	}
@@ -149,7 +155,7 @@ public class Usuariocontroller {
 	}
 
 	static class DatosAltaUsuario {
-		int id;
+		
 		String nombre;
 		String apellido;
 		String email;
@@ -158,18 +164,16 @@ public class Usuariocontroller {
 		String contrasena;
 		String rol;
 
-		public DatosAltaUsuario(int id, String nombre, String apellido, String email, String sexo, String pais,
-				String contrasena, String rol) {
-			super();
-			this.id = id;
-			this.nombre = nombre;
-			this.apellido = apellido;
-			this.email = email;
-			this.sexo = sexo;
-			this.pais = pais;
-			this.contrasena = contrasena;
-			this.rol = rol;
-		}
+		public DatosAltaUsuario(String nombre, String apellido, String email, String rol, String contrasena,
+	            String pais, String sexo) {
+	        this.nombre = nombre;
+	        this.apellido = apellido;
+	        this.email = email;
+	        this.sexo = sexo;
+	        this.pais = pais;
+	        this.contrasena = contrasena;
+	        this.rol = rol;
+	    }
 
 	}
 

@@ -21,10 +21,14 @@ public interface usuarioRepository extends JpaRepository<Usuario, Serializable> 
 	public abstract List<Usuario> findAll();
 	public abstract Usuario findById(int id);
 	public abstract Usuario findByNombre(String email);
-	
+
 	@Query("SELECT u FROM Usuario u WHERE u.email = :email AND u.contrasena = :contrasena")
 	Usuario autenticar(@Param("email") String email, @Param("contrasena") String contrasena);
 	public abstract Usuario findByEmailAndContrasena(String email, String contrasena);
+	
+
+	@Query("SELECT u FROM Usuario u WHERE u.email = :email ")
+	Usuario buscarUsuarioPorMail(@Param("email") String email);
 	
 	@Override
 	@Transactional

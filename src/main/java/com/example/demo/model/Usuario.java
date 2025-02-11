@@ -36,19 +36,15 @@ public class Usuario implements Serializable {
 
 	
 
-	public Usuario(int id, String apellido, String contrasena, String email, String nombre, String pais, String rol,
-			String sexo) {
-		super();
-		this.apellido = apellido;
-		this.contrasena = contrasena;
-		this.email = email;
-		this.id = id;
-		this.nombre = nombre;
-		this.pais = pais;
-		this.rol = rol;
-		this.sexo = sexo;
-	}
-
+	public Usuario(String nombre, String apellido, String email, String sexo, String pais, String contrasena, String rol) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.sexo = sexo;
+        this.pais = pais;
+        this.contrasena = contrasena;
+        this.rol = rol;
+    }
 
 
 	public String getApellido() {

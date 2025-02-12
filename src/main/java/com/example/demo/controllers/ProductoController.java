@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Marca;
 import com.example.demo.model.Producto;
 import com.example.demo.repository.marcaRepository;
 import com.example.demo.repository.productoRepository;
@@ -102,7 +103,48 @@ public class ProductoController {
 	
 	@PostMapping(path = "/anadirnuevo")
 	public void anadirUsuario(@RequestBody DatosAltaProducto p, HttpServletRequest request) {
-		proRep.save(new Producto(p.id,p.nombre,p.precio ,p.estado , p.descripcion , marca.findById(p.id),p.ruta));
+		proRep.save(new Producto(p.id,p.nombre,p.precio ,p.estado , p.descripcion , marca.findById(p.marca),p.ruta));
+	}
+
+	
+	
+	@PostMapping(path = "/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public DTO actualizarProducto(@RequestBody DatosAltaProducto datos, HttpServletRequest request) {
+	    DTO response = new DTO();
+	    try {
+	        Producto productoExistente = proRep.findById(datos.id);
+
+	        if (productoExistente == null) {
+	            response.put("status", "fail");
+	            response.put("message", "Producto no encontrado");
+	            return response;
+	        }
+
+	        Marca marcaProducto = marca.findById(datos.marca);
+	        if (marcaProducto == null) {
+	            response.put("status", "fail");
+	            response.put("message", "Marca no encontrada");
+	            return response;
+	        }
+
+	        // Actualizar los valores del producto existente
+	        productoExistente.setNombre(datos.nombre);
+	        productoExistente.setPrecio(datos.precio);
+	        productoExistente.setEstado(datos.estado);
+	        productoExistente.setDescripcion(datos.descripcion);
+	        productoExistente.setMarca(marcaProducto);
+	        productoExistente.setRuta(datos.ruta);
+
+	        // Guardar los cambios
+	        proRep.save(productoExistente);
+
+	        response.put("status", "success");
+	        response.put("message", "Producto actualizado correctamente");
+	    } catch (Exception e) {
+	        response.put("status", "fail");
+	        response.put("message", "Error al actualizar el producto: " + e.getMessage());
+	    }
+	    return response;
 	}
 
 	

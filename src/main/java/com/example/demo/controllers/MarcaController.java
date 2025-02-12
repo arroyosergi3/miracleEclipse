@@ -87,6 +87,34 @@ public class MarcaController {
 		marRep.save(new Marca(p.id,p.nombre));
 	}
 
+	@PostMapping(path = "/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public DTO actualizarMarca(@RequestBody DatosAltaMarca datos, HttpServletRequest request) {
+	    DTO response = new DTO();
+	    try {
+	        Marca marcaExistente = marRep.findById(datos.id);
+
+	        if (marcaExistente == null) {
+	            response.put("status", "fail");
+	            response.put("message", "Marca no encontrada");
+	            return response;
+	        }
+
+	        // Actualizar los valores de la marca existente
+	        marcaExistente.setNombre(datos.nombre);
+
+	        // Guardar los cambios
+	        marRep.save(marcaExistente);
+
+	        response.put("status", "success");
+	        response.put("message", "Marca actualizada correctamente");
+	    } catch (Exception e) {
+	        response.put("status", "fail");
+	        response.put("message", "Error al actualizar la marca: " + e.getMessage());
+	    }
+	    return response;
+	}
+
+
 	
 
 	static class DatosAltaMarca {

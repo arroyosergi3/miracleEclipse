@@ -18,6 +18,7 @@ import com.example.demo.model.Producto;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.alquilereRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -25,6 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AlquileresController {
 	@Autowired
 	alquilereRepository alRep;
+	@Transactional
 	@GetMapping("/obtener")
 	public List<DTO> getProductos() {
 		List<DTO> listaUsariosDTO = new ArrayList<>();

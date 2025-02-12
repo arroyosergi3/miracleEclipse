@@ -79,7 +79,7 @@ public class Usuariocontroller {
 			usuRep.delete(u);
 			dtoUsuaria.put("borrado", "success");
 		} else {
-			dtoUsuaria.put("borrado", "fail");
+			dtoUsuaria.put("borrado", "fail");	
 		}
 		return dtoUsuaria;
 	}

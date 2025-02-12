@@ -6,12 +6,9 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Alquilere;
-import com.example.demo.model.Producto;
-import com.example.demo.model.Usuario;
 
 import jakarta.transaction.Transactional;
 
@@ -22,6 +19,7 @@ public interface alquilereRepository extends JpaRepository<Alquilere, Serializab
 	@Bean
 	public abstract List<Alquilere> findAll();
 	public abstract Alquilere findById(int id);
+	
 	// Método para obtener alquileres por el id del usuario (relacionado a través de la entidad Usuario)
     public List<Alquilere> findByUsuario_Id(int idUsuario);
     
@@ -35,6 +33,7 @@ public interface alquilereRepository extends JpaRepository<Alquilere, Serializab
 	public abstract void delete(Alquilere u);
 	@Transactional
 	public abstract void deleteById(int id);
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public abstract Alquilere save (Alquilere u);

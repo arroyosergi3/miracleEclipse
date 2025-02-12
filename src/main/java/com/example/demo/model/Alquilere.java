@@ -25,11 +25,11 @@ public class Alquilere implements Serializable {
 	@Column(name="fecha_inicio")
 	private Date fechaInicio;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario", nullable = false)  // Clave foránea a Usuario
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_producto", nullable = false)  // Clave foránea a Producto
     private Producto producto;
 

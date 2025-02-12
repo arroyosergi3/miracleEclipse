@@ -3,6 +3,8 @@ package com.example.demo.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 
@@ -25,7 +27,7 @@ public class Usuario implements Serializable {
 	private String contrasena;
 	private String pais;
 	private String sexo;
-	
+	@JsonIgnore
 	 @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	    private List<Alquilere> alquileres;
 

@@ -20,7 +20,7 @@ import com.example.demo.repository.productoRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {

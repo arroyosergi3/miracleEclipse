@@ -17,7 +17,7 @@ import com.example.demo.repository.marcaRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/marcas")
 public class MarcaController {

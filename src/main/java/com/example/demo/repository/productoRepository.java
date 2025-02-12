@@ -17,6 +17,7 @@ public interface productoRepository extends JpaRepository<Producto, Serializable
 	@Override
 	@Bean
 	public abstract List<Producto> findAll();
+	
 	public abstract Producto findById(int id);
 	public abstract Producto findByNombre(String nombre);
 	@Override

@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuario")
 public class Usuariocontroller {
@@ -71,6 +71,41 @@ public class Usuariocontroller {
 		return dtoUsuario;
 	}
 
+	@PostMapping(path = "/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public DTO actualizarUsuario(@RequestBody DatosAltaUsuario datos, HttpServletRequest request) {
+	    DTO response = new DTO();
+	    try {
+	        // Buscar el usuario por ID
+	        Usuario usuarioExistente = usuRep.findById(datos.id);
+	        
+	        if (usuarioExistente == null) {
+	            response.put("status", "fail");
+	            response.put("message", "Usuario no encontrado");
+	            return response;
+	        }
+
+	        // Actualizar los datos del usuario
+	        usuarioExistente.setNombre(datos.nombre);
+	        usuarioExistente.setApellido(datos.apellido);
+	        usuarioExistente.setEmail(datos.email);
+	        usuarioExistente.setSexo(datos.sexo);
+	        usuarioExistente.setPais(datos.pais);
+	        usuarioExistente.setContraseña(datos.contrasena);
+	        usuarioExistente.setRol(datos.rol);
+
+	        // Guardar los cambios
+	        usuRep.save(usuarioExistente);
+
+	        response.put("status", "success");
+	        response.put("message", "Usuario actualizado correctamente");
+	    } catch (Exception e) {
+	        response.put("status", "fail");
+	        response.put("message", "Error al actualizar el usuario: " + e.getMessage());
+	    }
+	    return response;
+	}
+
+	
 	@PostMapping(path = "/borrar1", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public DTO deleteUsuario(@RequestBody DTO soloid, HttpServletRequest request) {
 		DTO dtoUsuaria = new DTO();
@@ -160,7 +195,7 @@ public class Usuariocontroller {
 	}
 
 	static class DatosAltaUsuario {
-		
+		int id;
 		String nombre;
 		String apellido;
 		String email;
@@ -169,9 +204,10 @@ public class Usuariocontroller {
 		String contrasena;
 		String rol;
 
-		public DatosAltaUsuario(String nombre, String apellido, String email, String rol, String contrasena,
+		public DatosAltaUsuario(int id, String nombre, String apellido, String email, String rol, String contrasena,
 	            String pais, String sexo) {
-	        this.nombre = nombre;
+			this.id = id;
+			this.nombre = nombre;
 	        this.apellido = apellido;
 	        this.email = email;
 	        this.sexo = sexo;

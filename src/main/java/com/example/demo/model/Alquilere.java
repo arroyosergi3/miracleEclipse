@@ -1,7 +1,11 @@
 package com.example.demo.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -19,18 +23,20 @@ public class Alquilere implements Serializable {
 	@Id
 	private int id;
 
-	@Column(name="fecha_fin")
+	@Column(name="fecha_fin")    
 	private Date fechaFin;
 
 	@Column(name="fecha_inicio")
 	private Date fechaInicio;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_usuario", nullable = false)  // Clave foránea a Usuario
+    @JoinColumn(name = "id_usuario", nullable = false) 
+	@JsonIgnore // Clave foránea a Usuario
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_producto", nullable = false)  // Clave foránea a Producto
+    @JsonIgnore
     private Producto producto;
 
 	public Alquilere() {
@@ -88,5 +94,8 @@ public class Alquilere implements Serializable {
 	public void setUsuario(Usuario idUsuario) {
 		this.usuario = idUsuario;
 	}
+
+
+
 
 }

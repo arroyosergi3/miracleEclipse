@@ -1,15 +1,10 @@
 package com.example.demo.controllers;
 
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,7 +22,6 @@ import com.example.demo.repository.productoRepository;
 import com.example.demo.repository.usuarioRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -130,8 +124,8 @@ public class AlquileresController {
 		LocalDate fecha1 = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		  fecha = LocalDate.parse(comprobacion.get("fecha_inicio").toString(), formatter);
-		  fecha1 = LocalDate.parse(comprobacion.get("FECHA_DIN").toString(), formatter);
-		boolean isAlquilado = alRep.isProductoAlquilado(Integer.parseInt(comprobacion.get("idProducto").toString()) , fecha, fecha1);
+		  fecha1 = LocalDate.parse(comprobacion.get("fecha_fin").toString(), formatter);
+		boolean isAlquilado = alRep.isProductoAlquilado(Integer.parseInt(comprobacion.get("id_producto").toString()) , fecha, fecha1);
 		
 		if(isAlquilado) {
 			dtoProducto.put("alquilado", "true");

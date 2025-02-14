@@ -2,9 +2,6 @@ package com.example.demo.model;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;

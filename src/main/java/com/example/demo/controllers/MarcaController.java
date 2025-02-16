@@ -84,7 +84,7 @@ public class MarcaController {
 	
 	@PostMapping(path = "/anadirnuevo")
 	public void anadirUsuario(@RequestBody DatosAltaMarca p, HttpServletRequest request) {
-		marRep.save(new Marca(p.id,p.nombre));
+		marRep.save(new Marca(p.nombre));	    
 	}
 
 	@PostMapping(path = "/actualizar", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -118,13 +118,17 @@ public class MarcaController {
 	
 
 	static class DatosAltaMarca {
-		 int id;
+		int id;
 		 String nombre;
-		public DatosAltaMarca(int id, String nombre) {
-			super();
-			this.id = id;
-			this.nombre = nombre;
-		}
+		 public DatosAltaMarca(int id, String nombre) {
+				super();
+				this.id = id;
+				this.nombre = nombre;
+			}
+		 public DatosAltaMarca( String nombre) {
+				super();
+				this.nombre = nombre;
+			}
 		
 		 
 		

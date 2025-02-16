@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * The persistent class for the productos database table.
@@ -20,7 +22,7 @@ public class Producto implements Serializable {
 	private int id;
 	@Lob
 	private String descripcion;
-	private byte estado;
+	private boolean estado;
 	@ManyToOne
 	@JoinColumn(name="id_marca")
 	private Marca marca;
@@ -38,15 +40,31 @@ public class Producto implements Serializable {
 	
 	
 
-	public Producto(int id, String nombre,BigDecimal precio, byte estado, String descripcion, Marca marca,  String ruta) {
+	public Producto(int id, String nombre,BigDecimal precio, boolean estado2, String descripcion, Marca marca,  String ruta) {
 		super();
 		this.id = id;
 		this.descripcion = descripcion;
-		this.estado = estado;
+		this.estado = estado2;
 		this.marca = marca;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.ruta = ruta;
+	}
+
+
+
+
+
+	public Producto(String nombre2, BigDecimal precio2, boolean estado2, String descripcion2, Marca byId,
+			String ruta2) {
+		super();
+		this.descripcion = descripcion2;
+		this.estado = estado2;
+		this.marca = byId;
+		this.nombre = nombre2;
+		this.precio = precio2;
+		this.ruta = ruta2;
+		
 	}
 
 
@@ -69,11 +87,11 @@ public class Producto implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public byte getEstado() {
+	public boolean getEstado() {
 		return this.estado;
 	}
 
-	public void setEstado(byte estado) {
+	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
 

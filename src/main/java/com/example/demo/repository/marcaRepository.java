@@ -22,6 +22,7 @@ public interface marcaRepository extends JpaRepository<Marca,Serializable> {
 	@Transactional 
 	public abstract void deleteById(int id);
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public abstract Usuario save(Usuario u);
+	public abstract Marca save(Marca u);
 }

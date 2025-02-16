@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -118,14 +120,34 @@ public class AlquileresController {
 	}
 
 	@PostMapping(path = "/estaAlquilado", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public DTO getDisponibles(@RequestBody DTO comprobacion, HttpServletRequest request) {
+	public DTO getDisponibles(@RequestBody  Map<String, Object>  comprobacion, HttpServletRequest request) {
 		DTO dtoProducto = new DTO();
 		LocalDate fecha = null;
 		LocalDate fecha1 = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		  fecha = LocalDate.parse(comprobacion.get("fecha_inicio").toString(), formatter);
-		  fecha1 = LocalDate.parse(comprobacion.get("fecha_fin").toString(), formatter);
-		boolean isAlquilado = alRep.isProductoAlquilado(Integer.parseInt(comprobacion.get("id_producto").toString()) , fecha, fecha1);
+        if (comprobacion.get("fecha_inicio") != null && comprobacion.get("fecha_fin") != null) {
+        	fecha = LocalDate.parse(comprobacion.get("fecha_inicio").toString(), formatter);
+  		  fecha1 = LocalDate.parse(comprobacion.get("fecha_fin").toString(), formatter);
+		}
+        boolean isAlquilado = false;
+        String idProductoObj = (String) comprobacion.get("id_producto");
+
+        if (idProductoObj == null) {
+            dtoProducto.put("error", "id_producto es null");
+            return dtoProducto;
+        }
+
+        try {
+            int idProducto = Integer.parseInt(idProductoObj);
+            isAlquilado = alRep.isProductoAlquilado(idProducto, fecha, fecha1);
+        } catch (NumberFormatException e) {
+            dtoProducto.put("error", "id_producto no es un número válido");
+            return dtoProducto;
+        } catch (Exception e) {
+            dtoProducto.put("error", "Error desconocido: " + e.getMessage());
+            return dtoProducto;
+        }
+
 		
 		if(isAlquilado) {
 			dtoProducto.put("alquilado", "true");

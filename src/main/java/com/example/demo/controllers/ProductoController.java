@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import com.example.demo.model.Marca;
 import com.example.demo.model.Producto;
 import com.example.demo.repository.marcaRepository;
 import com.example.demo.repository.productoRepository;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -103,8 +105,36 @@ public class ProductoController {
 	
 	@PostMapping(path = "/anadirnuevo")
 	public void anadirUsuario(@RequestBody DatosAltaProducto p, HttpServletRequest request) {
-		proRep.save(new Producto(p.id,p.nombre,p.precio ,p.estado , p.descripcion , marca.findById(p.marca),p.ruta));
+	    System.out.println("Datos recibidos:");
+	    System.out.println("Nombre: " + p.nombre);
+	    System.out.println("Precio: " + p.precio);
+	    System.out.println("Estado: " + p.estado);
+	    System.out.println("Descripción: " + p.descripcion);
+	    System.out.println("Marca ID: " + p.marca);
+	    System.out.println("Ruta: " + p.ruta);
+
+	    if (p.nombre == null || p.nombre.trim().isEmpty()) {
+	        throw new RuntimeException("El nombre del producto no puede ser nulo o vacío");
+	    }
+
+	    Marca marcaProducto = marca.findById(p.marca);
+	    if (marcaProducto == null) {
+	        throw new RuntimeException("Marca no encontrada con ID: " + p.marca);
+	    }
+
+	    Producto nuevoProducto = new Producto(
+	        p.nombre,
+	        p.precio,
+	        p.estado,
+	        p.descripcion,
+	        marcaProducto,
+	        p.ruta
+	    );
+
+	    proRep.save(nuevoProducto);
 	}
+
+
 
 	
 	
@@ -150,14 +180,31 @@ public class ProductoController {
 	
 
 	static class DatosAltaProducto {
-		 int id;
-		 String descripcion;
-		 byte estado;
-		 int marca;
-		 String nombre;
-		 BigDecimal precio;
-		 String ruta;
-		public DatosAltaProducto(int id, String descripcion, byte estado, int marca, String nombre,
+		@JsonProperty("id")
+	    private int id;
+
+	    @JsonProperty("descripcion")
+	    private String descripcion;
+
+	    @JsonProperty("estado")
+	    private boolean estado;
+
+	    @JsonProperty("id_marca")
+	    private int marca;
+
+	    @JsonProperty("nombre")
+	    private String nombre;
+
+	    @JsonProperty("precio")
+	    private BigDecimal precio;
+
+	    @JsonProperty("ruta")
+	    private String ruta;
+
+		 DatosAltaProducto(){
+			 
+		 }
+		public DatosAltaProducto(int id, String descripcion, boolean estado, int marca, String nombre,
 				BigDecimal precio, String ruta) {
 			super();
 			this.id = id;
@@ -168,7 +215,16 @@ public class ProductoController {
 			this.precio = precio;
 			this.ruta = ruta;
 		}
-		 
+		public DatosAltaProducto( String nombre, BigDecimal precio, boolean estado, String descripcion,  int marca, 
+				 String ruta) {
+			super();
+			this.descripcion = descripcion;
+			this.estado = estado;
+			this.marca = marca;
+			this.nombre = nombre;
+			this.precio = precio;
+			this.ruta = ruta;
+		}
 		
 
 	}

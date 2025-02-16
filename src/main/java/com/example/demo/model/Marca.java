@@ -36,6 +36,9 @@ public class Marca implements Serializable {
 		this.id = id;
 		this.nombre = nombre;
 	}
+	public Marca( String nombre) {
+		this.nombre = nombre;
+	}
 
 
 

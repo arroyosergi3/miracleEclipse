@@ -50,6 +50,13 @@ public class Alquilere implements Serializable {
 		this.usuario = idUsuario;
 	}
 
+	public Alquilere( Usuario idUsuario,  Producto idProducto, Date fechaInicio, Date fechaFin ) {
+		super();
+		this.fechaFin = fechaFin;
+		this.fechaInicio = fechaInicio;
+		this.producto = idProducto;
+		this.usuario = idUsuario;
+	}
 
 
 	public int getId() {

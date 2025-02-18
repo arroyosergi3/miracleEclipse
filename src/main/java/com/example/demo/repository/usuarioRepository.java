@@ -35,7 +35,7 @@ public interface usuarioRepository extends JpaRepository<Usuario, Serializable> 
 	public abstract void delete(Usuario u);
 	@Transactional
 	public abstract void deleteById(int id);
-	@Override
+	@Override  
 	@Transactional
 	public abstract Usuario save (Usuario u);
 }
